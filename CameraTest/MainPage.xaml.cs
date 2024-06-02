@@ -25,6 +25,11 @@ namespace CameraTest
             _cameraService.FrameCaptured += OnFrameCaptured;
         }
 
+        /// <summary>
+        /// Called when a frame is captured by the camera service
+        /// </summary>
+        /// <param name="sender">The camera service</param>
+        /// <param name="e">The image data</param>
         private void OnFrameCaptured(object sender, byte[] e)
         {
             if (_frameCount == -1)
@@ -39,10 +44,14 @@ namespace CameraTest
 
             _imageData = e;
 
+            // * 经过一系列处理，获得能用于显示的位图
             _skBitmap = DecodeImage(_imageData);
             _skBitmap = CropBitmapToSquare(_skBitmap);
             _skBitmap = RotateBitmap(_skBitmap, -90);
 
+            // TODO: Detect face
+
+            // * 通知视图刷新
             canvasView.InvalidateSurface();
 
             // MainThread.BeginInvokeOnMainThread(() =>
